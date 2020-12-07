@@ -9,10 +9,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import Link from "next/link";
 // import { useRouter } from "next/router";
 
-function InputField({ setFlag }) {
-  const [value, setValue] = useState("");
-  const emailInput = useRef();
-
+function InputField({ setFlag, setValue, value }) {
   function validate(e) {
     const newValue = e.target.value;
     let acctVerify = false;
@@ -24,12 +21,10 @@ function InputField({ setFlag }) {
       if (!isNaN(Number(newValue))) {
         if (!phonePattern.test(newValue)) {
           acctVerify = true;
-          console.log("phonePattern failed");
         }
       } else {
         if (!emailPattern.test(newValue)) {
           acctVerify = true;
-          console.log("emailPattern failed");
         }
       }
     }
@@ -45,7 +40,6 @@ function InputField({ setFlag }) {
       InputProps={{ disableUnderline: true }}
       onChange={validate}
       value={value}
-      inputRef={emailInput}
     />
   );
 }
@@ -69,8 +63,6 @@ export default function signup() {
 
   // const router = useRouter();
 
-  //console.log(emailInput);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -90,6 +82,13 @@ export default function signup() {
   const emailInput = useRef();
   const passwordInput = useRef();
   const [flag, setFlag] = useState(false);
+  const [value, setValue] = useState("");
+
+  function handle(event) {
+    const newValue = event.target.value;
+    console.log(newValue);
+    setValue(newValue);
+  }
 
   return (
     <div className="wid100 fx fx_center">
@@ -101,7 +100,13 @@ export default function signup() {
           會員登入
         </label>
         <div className="input_box">
-          <InputField setFlag={setFlag} inputRef={emailInput} />
+          <InputField
+            setFlag={setFlag}
+            setValue={setValue}
+            value={value}
+            inputRef={emailInput}
+            onChange={handle}
+          />
         </div>
 
         {flag && (
