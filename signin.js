@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { createRef, useState } from "react";
 import styles from "./components/layout.module.css";
 import TextField from "@material-ui/core/TextField";
 import InputBase from "@material-ui/core/InputBase";
@@ -9,37 +9,40 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import Link from "next/link";
 // import { useRouter } from "next/router";
 
-function InputField({ setFlag, setValue, value }) {
-  function validate(e) {
-    const newValue = e.target.value;
-    let acctVerify = false;
-    const emailPattern = new RegExp(
-      /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i
-    );
-    const phonePattern = new RegExp(/^09\d{2}-?\d{3}-?\d{3}$/);
-    if (newValue) {
-      if (!isNaN(Number(newValue))) {
-        if (!phonePattern.test(newValue)) {
-          acctVerify = true;
-        }
-      } else {
-        if (!emailPattern.test(newValue)) {
-          acctVerify = true;
-        }
+function validate(newValue) {
+  const emailPattern = new RegExp(
+    /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i
+  );
+  const phonePattern = new RegExp(/^09\d{2}-?\d{3}-?\d{3}$/);
+  if (newValue) {
+    if (!isNaN(Number(newValue))) {
+      if (!phonePattern.test(newValue)) {
+        return true;
+      }
+    } else {
+      if (!emailPattern.test(newValue)) {
+        return true;
       }
     }
+  }
+}
+function InputField({ setFlag, setValue, value, inputRef }) {
+  console.log(inputRef);
+  function handle(e) {
+    const newValue = e.target.value;
+    const acctVerify = validate(newValue);
     setValue(newValue);
     setFlag(acctVerify);
   }
-
   return (
     <TextField
       fullWidth
       required
       placeholder="請輸入您的Email或手機號碼"
       InputProps={{ disableUnderline: true }}
-      onChange={validate}
+      onChange={handle}
       value={value}
+      inputRef={inputRef}
     />
   );
 }
@@ -62,10 +65,13 @@ export default function signup() {
   };
 
   // const router = useRouter();
-
+  const emailInput = createRef();
+  const passwordInput = createRef();
+  const [flag, setFlag] = useState(false);
+  const [value, setValue] = useState("");
+  console.log(emailInput);
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const email = emailInput.current.value;
     const password = passwordInput.current.value;
     console.log(JSON.stringify({ email, password }));
@@ -79,10 +85,6 @@ export default function signup() {
     //     return router.push("/memberPage");
     // }
   };
-  const emailInput = useRef();
-  const passwordInput = useRef();
-  const [flag, setFlag] = useState(false);
-  const [value, setValue] = useState("");
 
   function handle(event) {
     const newValue = event.target.value;
