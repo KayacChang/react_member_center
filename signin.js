@@ -43,9 +43,9 @@ function InputField({ setFlag }) {
       required
       placeholder="請輸入您的Email或手機號碼"
       InputProps={{ disableUnderline: true }}
-      inputRef={emailInput}
       onChange={validate}
       value={value}
+      inputRef={emailInput}
     />
   );
 }
@@ -87,6 +87,7 @@ export default function signup() {
     //     return router.push("/memberPage");
     // }
   };
+  const emailInput = useRef();
   const passwordInput = useRef();
   const [flag, setFlag] = useState(false);
 
@@ -100,7 +101,7 @@ export default function signup() {
           會員登入
         </label>
         <div className="input_box">
-          <InputField setFlag={setFlag} />
+          <InputField setFlag={setFlag} inputRef={emailInput} />
         </div>
 
         {flag && (
