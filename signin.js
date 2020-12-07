@@ -9,6 +9,46 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import Link from "next/link";
 // import { useRouter } from "next/router";
 
+function InputField({ setFlag }) {
+  const [value, setValue] = useState("");
+  const emailInput = useRef();
+
+  function validate(e) {
+    const newValue = e.target.value;
+    let acctVerify = false;
+    const emailPattern = new RegExp(
+      /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i
+    );
+    const phonePattern = new RegExp(/^09\d{2}-?\d{3}-?\d{3}$/);
+    if (newValue) {
+      if (!isNaN(Number(newValue))) {
+        if (!phonePattern.test(newValue)) {
+          acctVerify = true;
+          console.log("phonePattern failed");
+        }
+      } else {
+        if (!emailPattern.test(newValue)) {
+          acctVerify = true;
+          console.log("emailPattern failed");
+        }
+      }
+    }
+    setValue(newValue);
+    setFlag(acctVerify);
+  }
+
+  return (
+    <TextField
+      fullWidth
+      required
+      placeholder="請輸入您的Email或手機號碼"
+      InputProps={{ disableUnderline: true }}
+      inputRef={emailInput}
+      onChange={validate}
+      value={value}
+    />
+  );
+}
 export default function signup() {
   const [values, setValues] = React.useState({
     password: "",
@@ -28,8 +68,6 @@ export default function signup() {
   };
 
   // const router = useRouter();
-  const emailInput = useRef();
-  const passwordInput = useRef();
 
   //console.log(emailInput);
 
@@ -49,46 +87,7 @@ export default function signup() {
     //     return router.push("/memberPage");
     // }
   };
-
-  function InputField({ setFlag }) {
-    const [value, setValue] = useState("");
-
-    function validate(e) {
-      const newValue = e.target.value;
-      let acctVerify;
-      const emailPattern = new RegExp(
-        /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i
-      );
-      const phonePattern = new RegExp(/^09\d{2}-?\d{3}-?\d{3}$/);
-      if (!isNaN(Number(newValue))) {
-        if (!phonePattern.test(newValue)) {
-          acctVerify == false;
-          console.log("phonePattern failed");
-        }
-      } else {
-        if (!emailPattern.test(newValue)) {
-          acctVerify == false;
-          console.log("emailPattern failed");
-        }
-      }
-
-      setValue(newValue);
-      setFlag(acctVerify);
-    }
-
-    return (
-      <TextField
-        fullWidth
-        required
-        placeholder="請輸入您的Email或手機號碼"
-        InputProps={{ disableUnderline: true }}
-        inputRef={emailInput}
-        onChange={validate}
-        value={value}
-      />
-    );
-  }
-
+  const passwordInput = useRef();
   const [flag, setFlag] = useState(false);
 
   return (
