@@ -7,57 +7,66 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import Link from "next/link";
+import RaisedButton from "material-ui/RaisedButton";
 // import { useRouter } from "next/router";
 
-function validate(newValue) {
+function acctValidate(newValue, type) {
   const emailPattern = new RegExp(
     /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i
   );
   const phonePattern = new RegExp(/^09\d{2}-?\d{3}-?\d{3}$/);
   if (newValue) {
-    if (!isNaN(Number(newValue))) {
-      if (!phonePattern.test(newValue)) {
-        return true;
-      }
-    } else {
-      if (!emailPattern.test(newValue)) {
-        return true;
-      }
+    //acctID
+    if (
+      (!isNaN(Number(newValue)) &&
+        !phonePattern.test(newValue) &&
+        newValue.length > 9) ||
+      (isNaN(Number(newValue)) &&
+        !emailPattern.test(newValue) &&
+        newValue.length > 5)
+    ) {
+      return true;
     }
   }
 }
-function InputField({ setFlag, setValue, value, inputRef }) {
-  console.log(inputRef);
+function InputField({
+  setAcctErr,
+  setAcct,
+  acct,
+  inputRef,
+  placeholder,
+  type,
+}) {
   function handle(e) {
     const newValue = e.target.value;
-    const acctVerify = validate(newValue);
-    setValue(newValue);
-    setFlag(acctVerify);
+    const acctVerify = acctValidate(newValue, type);
+    setAcct(newValue);
+    setAcctErr(acctVerify);
   }
   return (
     <TextField
       fullWidth
       required
-      placeholder="請輸入您的Email或手機號碼"
+      placeholder={placeholder}
       InputProps={{ disableUnderline: true }}
-      onChange={handle}
-      value={value}
+      value={acct}
       inputRef={inputRef}
+      onChange={handle}
     />
   );
 }
 export default function signup() {
-  const [values, setValues] = React.useState({
+  const [values, setAccts] = React.useState({
     password: "",
     showPassword: false,
   });
 
   const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
+    setAccts({ ...values, [prop]: event.target.value });
   };
 
   const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword });
+    setAccts({ ...values, showPassword: !values.showPassword });
   };
 
   const handleMouseDownPassword = (event) => {
@@ -65,32 +74,45 @@ export default function signup() {
   };
 
   // const router = useRouter();
-  const emailInput = createRef();
+  const acctInput = createRef();
   const passwordInput = createRef();
-  const [flag, setFlag] = useState(false);
-  const [value, setValue] = useState("");
-  console.log(emailInput);
+  const [acctErr, setAcctErr] = useState(false);
+  const [acct, setAcct] = useState("");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const email = emailInput.current.value;
-    const password = passwordInput.current.value;
-    console.log(JSON.stringify({ email, password }));
-    // const response = await fetch("/Login", {
-    //     method: "POST",
-    //     headers: { "Content-Type": "application/json" },
-    //     body: JSON.stringify({ email, password })
-    // });
+    const Account = acctInput.current.value;
+    const Password = passwordInput.current.value;
+    if (!acctErr) {
+      console.log(
+        JSON.stringify({ Data: { Account, Password }, source_id: 4 })
+      );
 
-    // if (response.ok) {
-    //     return router.push("/memberPage");
-    // }
+      const response = await fetch(
+        "https://10.2.108.136:3366/carplus/member/Login",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ Data: { Account, Password }, source_id: 4 }),
+        }
+      )
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (myJson) {
+          if (myJson.ReturnCode == 0) {
+            console.log("AcctID: " + myJson.ReturnData.AcctID);
+          } else {
+            console.log(myJson.ReturnMessage + "(" + myJson.ReturnCode + ")");
+          }
+        });
+
+      // if (response.ok) {
+      //   console.log(response);
+      //   //return router.push("/memberPage");
+      // }
+    }
   };
-
-  function handle(event) {
-    const newValue = event.target.value;
-    console.log(newValue);
-    setValue(newValue);
-  }
 
   return (
     <div className="wid100 fx fx_center">
@@ -103,15 +125,16 @@ export default function signup() {
         </label>
         <div className="input_box">
           <InputField
-            setFlag={setFlag}
-            setValue={setValue}
-            value={value}
-            inputRef={emailInput}
-            onChange={handle}
+            setAcctErr={setAcctErr}
+            setAcct={setAcct}
+            value={acct}
+            inputRef={acctInput}
+            placeholder="請輸入您的Email或手機號碼"
+            type="acct"
           />
         </div>
 
-        {flag && (
+        {acctErr && (
           <span style={{ color: "red" }}>
             Email或手機號碼格式錯誤，請重新輸入
           </span>
