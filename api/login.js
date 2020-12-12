@@ -1,0 +1,37 @@
+import { Response } from "../model/login";
+
+function log(myJson) {
+  if (myJson.ReturnCode == 0) {
+    console.log("AcctID: " + myJson.ReturnData.AcctID);
+  } else {
+    console.log(myJson.ReturnMessage + "(" + myJson.ReturnCode + ")");
+  }
+}
+
+function real() {
+  return fetch("https://10.2.108.136:3366/carplus/member/Login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(request),
+  })
+    .then((response) => response.json())
+    .then((myJson) => {
+      log(myJson);
+
+      return myJson;
+    });
+}
+
+function wait(ms) {
+  return new Promise((res) => setTimeout(res, ms));
+}
+
+async function mock() {
+  await wait(1000);
+
+  return Response();
+}
+
+export default function login(request) {
+  return mock();
+}
