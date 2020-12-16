@@ -29,6 +29,7 @@ Response
 */
 
 export function Request(account, password) {
+  console.log(account + "/" + password);
   return {
     Data: {
       Account: account,
@@ -36,13 +37,13 @@ export function Request(account, password) {
     },
     source_id: 4,
   };
+
 }
 
 export function Response() {
   return {
-    ReturnCode: 1,
+    ReturnCode: 0,
     ReturnDate: "2020-12-08 11:56:49",
-    ReturnMessage: "查無此帳號",
     ReturnData: {
       firstlogings: false,
       level: "VIP",
@@ -51,5 +52,14 @@ export function Response() {
       LoginID: "O200253285",
       Status: 0,
     },
+  };
+}
+
+export function FailedResponse() {
+  return {
+    ReturnCode: 9999,
+    ReturnDate: "2020-12-08 11:56:49",
+    ReturnMessage: "查無此帳號",
+    ReturnData: {},
   };
 }

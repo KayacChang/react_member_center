@@ -1,4 +1,4 @@
-import { Response } from "../model/login";
+import { Response, FailedResponse } from "../model/login";
 
 function log(myJson) {
   if (myJson.ReturnCode == 0) {
@@ -26,12 +26,16 @@ function wait(ms) {
   return new Promise((res) => setTimeout(res, ms));
 }
 
-async function mock() {
+async function mock(acct) {
   await wait(1000);
+  if (acct == '0963379159') {
+    return Response();
+  } else {
+    return FailedResponse();
+  }
 
-  return Response();
 }
 
-export default function login(request) {
-  return mock();
+export default function login(request, acct) {
+  return mock(acct);
 }

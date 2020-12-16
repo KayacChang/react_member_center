@@ -20,31 +20,39 @@ export default function updateMember() {
     });
 
     const hasLogin = useSelector((state) => state.user);
-
+    const [orgData, setData] = useState();
     React.useEffect(() => {
         if (!hasLogin) {
-            // logout();
+            logout();
+            return;
         }
+
         const fetchUsers = async () => {
             const data = await getData();
-            const subyear = data.Data.Birth.substring(0, 4);
-            const submonth = data.Data.Birth.substring(5, 7);
-            const subday = data.Data.Birth.substring(8, 10);
-
-            setUser({
-                ...user,
-                name: data.Data.AcctName,
-                id: data.Data.LoginID,
-                phone: data.Data.MainCell,
-                email: data.Data.Email,
-                year: parseInt(subyear, 10),
-                month: parseInt(submonth, 10),
-                day: parseInt(subday, 10),
-            });
+            setData(data);
+            init(data);
         };
 
         fetchUsers();
+
     }, []);
+
+    function init(data) {
+        const subyear = data.Data.Birth.substring(0, 4);
+        const submonth = data.Data.Birth.substring(5, 7);
+        const subday = data.Data.Birth.substring(8, 10);
+
+        setUser({
+            ...user,
+            name: data.Data.AcctName,
+            id: data.Data.LoginID,
+            phone: data.Data.MainCell,
+            email: data.Data.Email,
+            year: parseInt(subyear, 10),
+            month: parseInt(submonth, 10),
+            day: parseInt(subday, 10),
+        });
+    }
 
     const [err, setErr] = useState({
         nameErr: '',
@@ -103,6 +111,9 @@ export default function updateMember() {
         }
     }
 
+    const [isSubmit, setIsSubmit] = useState(false);
+    const filled = () => { setIsSubmit(true); }
+
     return (
         <div className=' wid100 fx fx_center'>
             <form className={styles.signup + ' wid50'} onSubmit={handleSubmit}>
@@ -119,8 +130,9 @@ export default function updateMember() {
                     <InputField
                         setFuncErr={setErr}
                         setFunc={setUser}
-                        value={user.name}
+                        value={user}
                         placeholder='請輸入姓名'
+                        filled={filled}
                         type='name'
                     />
 
@@ -136,8 +148,9 @@ export default function updateMember() {
                     <InputField
                         setFuncErr={setErr}
                         setFunc={setUser}
-                        value={user.id}
+                        value={user}
                         placeholder='請輸入您的身分證字號'
+                        filled={filled}
                         type='id'
                     />
 
@@ -171,8 +184,9 @@ export default function updateMember() {
                     <InputField
                         setFuncErr={setErr}
                         setFunc={setUser}
-                        value={user.phone}
+                        value={user}
                         placeholder='請輸入您的行動電話'
+                        filled={filled}
                         type='phone'
                     />
 
@@ -188,8 +202,9 @@ export default function updateMember() {
                     <InputField
                         setFuncErr={setErr}
                         setFunc={setUser}
-                        value={user.email}
+                        value={user}
                         placeholder='請輸入您的Email'
+                        filled={filled}
                         type='email'
                     />
 
@@ -198,8 +213,8 @@ export default function updateMember() {
 
                 <div className={styles.btnGroup + ' fx fx_nowrap'}>
 
-                    <button type='submit' className={'btn wid100 btn_00'}>
-                        確認送出
+                    <button type='submit' className={isSubmit ? 'btn btn50 btn_00' : 'btn btn50 btn_disable'}>
+                        確定修改
                     </button>
                 </div>
 

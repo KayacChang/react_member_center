@@ -16,7 +16,7 @@ export default function signup() {
         psw: '',
         pswConfirm: '',
     });
-    console.log(user);
+
     const [err, setErr] = useState({
         nameErr: '',
         idErr: '',
@@ -117,12 +117,12 @@ export default function signup() {
                     <InputField
                         setFuncErr={setErr}
                         setFunc={setUser}
-                        value={user.name}
+                        value={user}
                         err={err}
                         placeholder='請輸入姓名'
                         type='name'
                         filled={filled}
-                        data={user}
+
                     />
 
                     {err.nameErr && <span className='input_err'>請輸入姓名</span>}
@@ -137,12 +137,12 @@ export default function signup() {
                     <InputField
                         setFuncErr={setErr}
                         setFunc={setUser}
-                        value={user.id}
+                        value={user}
                         err={err}
                         placeholder='請輸入您的身分證字號'
                         type='id'
                         filled={filled}
-                        data={user}
+
                     />
 
                     {err.idErr && <span className='input_err'>請輸入正確的身分證字號。</span>}
@@ -175,12 +175,12 @@ export default function signup() {
                     <InputField
                         setFuncErr={setErr}
                         setFunc={setUser}
-                        value={user.phone}
+                        value={user}
                         err={err}
                         placeholder='請輸入您的行動電話'
                         type='phone'
                         filled={filled}
-                        data={user}
+
                     />
 
                     {err.phoneErr && <span className='input_err'>請輸入正確的行動電話。</span>}
@@ -195,12 +195,11 @@ export default function signup() {
                     <InputField
                         setFuncErr={setErr}
                         setFunc={setUser}
-                        value={user.email}
+                        value={user}
                         err={err}
                         placeholder='請輸入您的Email'
                         type='email'
                         filled={filled}
-                        data={user}
                     />
 
                     {err.emailErr && <span className='input_err'>請輸入正確的Email，建議避免使用hotmail。</span>}

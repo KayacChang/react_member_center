@@ -13,29 +13,15 @@ import loginAction from '../../store/actions/login';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import Alert from '../../components/modal'
-
 import store from '../../store';
+import { loginAcctValidate } from '../../functions/validation';
 
-function acctValidate(newValue) {
-    if (!newValue) return;
 
-    const emailPattern = new RegExp(
-        /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i
-    );
-    const phonePattern = new RegExp(/^09\d{2}-?\d{3}-?\d{3}$/);
-    //acctID
-    if (
-        (!isNaN(Number(newValue)) && !phonePattern.test(newValue) && newValue.length > 9) ||
-        (isNaN(Number(newValue)) && !emailPattern.test(newValue) && newValue.length > 5)
-    ) {
-        return true;
-    }
-}
 
 function InputField({ setAcct, value, placeholder }) {
     function handle(e) {
         const newValue = e.target.value;
-        const acctVerify = acctValidate(newValue);
+        const acctVerify = loginAcctValidate(newValue);
         setAcct({ ...value, acct: newValue, acctErr: acctVerify });
     }
     return (
@@ -78,7 +64,8 @@ export default function SignIn() {
         e.preventDefault();
         if (values.acctErr) return;
         const req = Request(values.acct, values.password);
-        const res = await login(req);
+        const res = await login(req, values.acct);
+
         if (res.ReturnCode == 0) {
             store.dispatch(loginAction(res.ReturnData.AcctID));
             console.log(store.getState());
