@@ -104,10 +104,7 @@ export default function signup() {
     return (
         <div className=' wid100 fx fx_center'>
             <form className={styles.signup + ' wid50'} onSubmit={handleSubmit}>
-                <label
-                    className='wid100 fx fx_center'
-                    style={{ margin: '20px 0', fontSize: '1.3em', fontWeight: 'bold' }}
-                >
+                <label className='wid100 fx fx_center mainTitle'>
                     會員註冊
                 </label>
 
@@ -140,7 +137,7 @@ export default function signup() {
                     <InputField
                         setFuncErr={setErr}
                         setFunc={setUser}
-                        value={user}
+                        value={user.id}
                         err={err}
                         placeholder='請輸入您的身分證字號'
                         type='id'
@@ -178,7 +175,7 @@ export default function signup() {
                     <InputField
                         setFuncErr={setErr}
                         setFunc={setUser}
-                        value={user}
+                        value={user.phone}
                         err={err}
                         placeholder='請輸入您的行動電話'
                         type='phone'
@@ -198,7 +195,7 @@ export default function signup() {
                     <InputField
                         setFuncErr={setErr}
                         setFunc={setUser}
-                        value={user}
+                        value={user.email}
                         err={err}
                         placeholder='請輸入您的Email'
                         type='email'

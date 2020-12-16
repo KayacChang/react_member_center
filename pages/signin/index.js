@@ -12,9 +12,9 @@ import { Request } from '../../model/login';
 import loginAction from '../../store/actions/login';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
+import Alert from '../../components/modal'
 
 import store from '../../store';
-// import { useRouter } from "next/router";
 
 function acctValidate(newValue) {
     if (!newValue) return;
@@ -32,12 +32,11 @@ function acctValidate(newValue) {
     }
 }
 
-function InputField({ setAcctErr, setAcct, acct, inputRef, placeholder, type }) {
+function InputField({ setAcct, value, placeholder }) {
     function handle(e) {
         const newValue = e.target.value;
         const acctVerify = acctValidate(newValue);
-        setAcct(newValue);
-        setAcctErr(acctVerify);
+        setAcct({ ...value, acct: newValue, acctErr: acctVerify });
     }
     return (
         <TextField
@@ -45,8 +44,7 @@ function InputField({ setAcctErr, setAcct, acct, inputRef, placeholder, type }) 
             required
             placeholder={placeholder}
             InputProps={{ disableUnderline: true }}
-            value={acct}
-            inputRef={inputRef}
+            value={value.acct}
             onChange={handle}
         />
     );
@@ -56,6 +54,10 @@ export default function SignIn() {
     const [values, setAccts] = React.useState({
         password: '',
         showPassword: false,
+        open: false,
+        alertText: '',
+        acct: '',
+        acctErr: false,
     });
 
     const hasLogin = useSelector((state) => state.user);
@@ -70,53 +72,40 @@ export default function SignIn() {
         setAccts({ ...values, showPassword: !values.showPassword });
     };
 
-    const handleMouseDownPassword = (event) => {
-        event.preventDefault();
-    };
 
-    // const router = useRouter();
-    const acctInput = createRef();
-    const passwordInput = createRef();
-    const [acctErr, setAcctErr] = useState(false);
-    const [acct, setAcct] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        if (acctErr) return;
-
-        const req = Request(acctInput.current.value, passwordInput.current.value);
-
+        if (values.acctErr) return;
+        const req = Request(values.acct, values.password);
         const res = await login(req);
         if (res.ReturnCode == 0) {
             store.dispatch(loginAction(res.ReturnData.AcctID));
             console.log(store.getState());
             //window.location.href = '/getMember';
             router.push('/updateMember');
+        } else {
+            setAccts({ ...values, open: true, alertText: res.ReturnMessage });
         }
     };
 
     return (
         <div className='wid100 fx fx_center'>
+            <Alert setFunc={setAccts} modalData={values} />
             <form className={styles.signin + ' wid50'} onSubmit={handleSubmit}>
-                <label
-                    className='wid100 fx fx_center'
-                    style={{ margin: '20px 0', fontSize: '1.3em', fontWeight: 'bold' }}
-                >
+                <label className='wid100 fx fx_center mainTitle'>
                     {hasLogin ? JSON.stringify(hasLogin) : '會員登入'}
                 </label>
                 <div className='input_box'>
                     <InputField
-                        setAcctErr={setAcctErr}
-                        setAcct={setAcct}
-                        value={acct}
-                        inputRef={acctInput}
+                        setAcct={setAccts}
+                        value={values}
                         placeholder='請輸入您的Email或手機號碼'
                         type='acct'
                     />
                 </div>
 
-                {acctErr && <span className='input_err'>Email或手機號碼格式錯誤，請重新輸入</span>}
+                {values.acctErr && <span className='input_err'>Email或手機號碼格式錯誤，請重新輸入</span>}
 
                 <div className='input_box'>
                     <InputBase
@@ -126,11 +115,10 @@ export default function SignIn() {
                         value={values.password}
                         onChange={handleChange('password')}
                         inputProps={{ 'aria-label': 'naked' }}
-                        inputRef={passwordInput}
                         placeholder='請輸入密碼'
                         endAdornment={
                             <InputAdornment position='end'>
-                                <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword}>
+                                <IconButton onClick={handleClickShowPassword}>
                                     {values.showPassword ? <Visibility /> : <VisibilityOff />}
                                 </IconButton>
                             </InputAdornment>
@@ -138,24 +126,27 @@ export default function SignIn() {
                     />
                 </div>
 
-                <div className={styles.linkGroup + ' fx fx_nowrap fx_between'}>
-                    <Link href='/'>
-                        <a>忘記密碼？</a>
+                <div className={styles.linkGroup + ' fx fx_nowrap fx_end'}>
+
+                    沒有帳號？
+                    <Link href='/signup'>
+                        <a className='linkText'>加入會員</a>
                     </Link>
-                    <label>
-                        沒有帳號？
-                        <Link href='/signup'>
-                            <a>加入會員</a>
-                        </Link>
-                    </label>
+
                 </div>
 
                 <div>
-                    <button type='submit' className='btn btn100 btn_00'>
+                    <button type='submit' className='btn wid100 btn_00'>
                         確認送出
                     </button>
+                    <Link href='/'>
+                        <button className='btn wid100 btn_01'>
+                            上一頁
+                        </button>
+                    </Link>
                 </div>
+
             </form>
-        </div>
+        </div >
     );
 }

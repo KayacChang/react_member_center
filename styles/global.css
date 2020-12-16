@@ -264,8 +264,6 @@ select option {
     box-sizing: border-box;
 }
 
-
-
 ::placeholder {
     color: #999999;
     font-size: 0.8em;
@@ -274,7 +272,7 @@ select option {
 
 .input_box {
     border: solid 1px #d7d7d7;
-    margin-bottom: 20px;
+    margin-top: 20px;
 }
 
 .input_border {
@@ -286,17 +284,10 @@ select option {
     color: red;
 }
 
-.btn100 {
-    width: 100%;
-}
-
-.btn50 {
-    width: 48%;
-}
-
 .btn {
     height: 48px;
     outline: none;
+    margin-bottom: 10px;
 }
 
 .btn:hover,
@@ -345,4 +336,44 @@ select option {
     background: #ff6708;
     color: #fff;
     outline: none;
+}
+
+.container {
+    min-height: 100vh;
+    padding: 0 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+main {
+    padding: 5rem 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+footer {
+    width: 100%;
+    height: 100px;
+    border-top: 1px solid #eaeaea;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.linkText {
+    color: #ff6708;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.mainTitle {
+    margin: 20px 0;
+
+    font-size: 1.3em;
+    font-weight: bold;
 }

@@ -14,8 +14,9 @@ Requests
 
 Response
 {
-   "ReturnCode":0,
+   "ReturnCode":1,
    "ReturnDate":"2020-12-08 11:56:49",
+   "ReturnMessage":"查無此帳號",
    "ReturnData":{
       "firstlogings":false,
       "level":"VIP",
@@ -39,8 +40,9 @@ export function Request(account, password) {
 
 export function Response() {
   return {
-    ReturnCode: 0,
+    ReturnCode: 1,
     ReturnDate: "2020-12-08 11:56:49",
+    ReturnMessage: "查無此帳號",
     ReturnData: {
       firstlogings: false,
       level: "VIP",
