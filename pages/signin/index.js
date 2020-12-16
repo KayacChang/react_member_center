@@ -1,5 +1,4 @@
 import React, { createRef, useState } from 'react';
-import styles from '../../components/layout.module.css';
 import TextField from '@material-ui/core/TextField';
 import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
@@ -79,7 +78,7 @@ export default function SignIn() {
     return (
         <div className='wid100 fx fx_center'>
             <Alert setFunc={setAccts} modalData={values} />
-            <form className={styles.signin + ' wid50'} onSubmit={handleSubmit}>
+            <form className='signin wid50' onSubmit={handleSubmit}>
                 <label className='wid100 fx fx_center mainTitle'>
                     {hasLogin ? JSON.stringify(hasLogin) : '會員登入'}
                 </label>
@@ -113,7 +112,7 @@ export default function SignIn() {
                     />
                 </div>
 
-                <div className={styles.linkGroup + ' fx fx_nowrap fx_end'}>
+                <div className='linkGroup fx fx_nowrap fx_end'>
 
                     沒有帳號？
                     <Link href='/signup'>

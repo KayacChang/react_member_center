@@ -1,5 +1,4 @@
 import React, { createRef, useState } from 'react';
-import styles from '../../components/layout.module.css';
 import InputField from '../../components/inputField';
 import PasswordVisibale from '../../components/passwordVisibale';
 import BirthdayPiker from '../../components/birthdayPiker';
@@ -102,14 +101,14 @@ export default function signup() {
     };
 
     return (
-        <div className=' wid100 fx fx_center'>
-            <form className={styles.signup + ' wid50'} onSubmit={handleSubmit}>
+        <div className='wid100 fx fx_center'>
+            <form className='signup wid50' onSubmit={handleSubmit}>
                 <label className='wid100 fx fx_center mainTitle'>
                     會員註冊
                 </label>
 
-                <div className={styles.formGroup}>
-                    <div className={styles.formTitle}>
+                <div className='formGroup'>
+                    <div className='formTitle'>
                         <p>
                             姓名<label>*</label>
                         </p>
@@ -128,8 +127,8 @@ export default function signup() {
                     {err.nameErr && <span className='input_err'>請輸入姓名</span>}
                 </div>
 
-                <div className={styles.formGroup}>
-                    <div className={styles.formTitle}>
+                <div className='formGroup'>
+                    <div className='formTitle'>
                         <p>
                             身分證字號<label>*</label>
                         </p>
@@ -148,8 +147,8 @@ export default function signup() {
                     {err.idErr && <span className='input_err'>請輸入正確的身分證字號。</span>}
                 </div>
 
-                <div className={styles.formGroup}>
-                    <div className={styles.formTitle}>
+                <div className='formGroup'>
+                    <div className='formTitle'>
                         <p>
                             出生年月日<label>*</label>
                         </p>
@@ -166,8 +165,8 @@ export default function signup() {
                     </div>
                 </div>
 
-                <div className={styles.formGroup}>
-                    <div className={styles.formTitle}>
+                <div className='formGroup'>
+                    <div className='formTitle'>
                         <p>
                             行動電話<label>*</label>
                         </p>
@@ -186,8 +185,8 @@ export default function signup() {
                     {err.phoneErr && <span className='input_err'>請輸入正確的行動電話。</span>}
                 </div>
 
-                <div className={styles.formGroup}>
-                    <div className={styles.formTitle}>
+                <div className='formGroup'>
+                    <div className='formTitle'>
                         <p>
                             Email<label>*</label>
                         </p>
@@ -205,8 +204,8 @@ export default function signup() {
                     {err.emailErr && <span className='input_err'>請輸入正確的Email，建議避免使用hotmail。</span>}
                 </div>
 
-                <div className={styles.formGroup}>
-                    <div className={styles.formTitle}>
+                <div className='formGroup'>
+                    <div className='formTitle'>
                         <p>
                             密碼<label>*</label>
                         </p>
@@ -225,8 +224,8 @@ export default function signup() {
                     )}
                 </div>
 
-                <div className={styles.formGroup}>
-                    <div className={styles.formTitle}>
+                <div className='formGroup'>
+                    <div className='formTitle'>
                         <p>
                             確認密碼<label>*</label>
                         </p>
@@ -243,7 +242,7 @@ export default function signup() {
                     {err.pswConfirmErr && <span className='input_err'>兩次密碼輸入不相同。</span>}
                 </div>
 
-                <div className={styles.btnGroup + ' fx fx_nowrap'}>
+                <div className='btnGroup fx fx_nowrap'>
                     <Link href='/signin'>
                         <button className='btn btn50 btn_01'>回上一頁</button>
                     </Link>

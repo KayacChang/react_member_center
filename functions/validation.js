@@ -1,5 +1,10 @@
+const emailPattern = new RegExp(
+    /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i
+);
+const phonePattern = new RegExp(/^09\d{2}-?\d{3}-?\d{3}$/);
+
 export function nameValidate(newValue) {
-    //Name
+
     if (newValue && newValue.length < 2) {
         return true;
     } else {
@@ -50,11 +55,8 @@ export function idValidate(newValue) {
 export function loginAcctValidate(newValue) {
     if (!newValue) return;
 
-    const emailPattern = new RegExp(
-        /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i
-    );
-    const phonePattern = new RegExp(/^09\d{2}-?\d{3}-?\d{3}$/);
-    //acctID
+
+
     if (
         (!isNaN(Number(newValue)) && !phonePattern.test(newValue) && newValue.length > 9) ||
         (isNaN(Number(newValue)) && !emailPattern.test(newValue) && newValue.length > 5)

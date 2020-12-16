@@ -1,5 +1,4 @@
 import React, { createRef, useState, useEffect } from 'react';
-import styles from '../../components/layout.module.css';
 import InputField from '../../components/inputField';
 import BirthdayPiker from '../../components/birthdayPiker';
 import logoutAction from '../../store/actions/logout';
@@ -116,13 +115,13 @@ export default function updateMember() {
 
     return (
         <div className=' wid100 fx fx_center'>
-            <form className={styles.signup + ' wid50'} onSubmit={handleSubmit}>
+            <form className='signup wid50' onSubmit={handleSubmit}>
                 <label className='wid100 fx fx_center mainTitle'>
                     修改會員資料
                 </label>
 
-                <div className={styles.formGroup}>
-                    <div className={styles.formTitle}>
+                <div className='formGroup'>
+                    <div className='formTitle'>
                         <p>
                             姓名<label>*</label>
                         </p>
@@ -139,8 +138,8 @@ export default function updateMember() {
                     {err.nameErr && <span className='input_err'>請輸入姓名</span>}
                 </div>
 
-                <div className={styles.formGroup}>
-                    <div className={styles.formTitle}>
+                <div className='formGroup'>
+                    <div className='formTitle'>
                         <p>
                             身分證字號<label>*</label>
                         </p>
@@ -157,8 +156,8 @@ export default function updateMember() {
                     {err.idErr && <span className='input_err'>請輸入正確的身分證字號。</span>}
                 </div>
 
-                <div className={styles.formGroup}>
-                    <div className={styles.formTitle}>
+                <div className='formGroup'>
+                    <div className='formTitle'>
                         <p>
                             出生年月日<label>*</label>
                         </p>
@@ -175,8 +174,8 @@ export default function updateMember() {
                     </div>
                 </div>
 
-                <div className={styles.formGroup}>
-                    <div className={styles.formTitle}>
+                <div className='formGroup'>
+                    <div className='formTitle'>
                         <p>
                             行動電話<label>*</label>
                         </p>
@@ -193,8 +192,8 @@ export default function updateMember() {
                     {err.phoneErr && <span className='input_err'>請輸入正確的行動電話。</span>}
                 </div>
 
-                <div className={styles.formGroup}>
-                    <div className={styles.formTitle}>
+                <div className='formGroup'>
+                    <div className='formTitle'>
                         <p>
                             Email<label>*</label>
                         </p>
@@ -211,14 +210,14 @@ export default function updateMember() {
                     {err.emailErr && <span className='input_err'>請輸入正確的Email，建議避免使用hotmail。</span>}
                 </div>
 
-                <div className={styles.btnGroup + ' fx fx_nowrap'}>
+                <div className='btnGroup fx fx_nowrap'>
 
                     <button type='submit' className={isSubmit ? 'btn btn50 btn_00' : 'btn btn50 btn_disable'}>
                         確定修改
                     </button>
                 </div>
 
-                <div className={styles.btnGroup + ' fx fx_nowrap'}>
+                <div className='btnGroup fx fx_nowrap'>
                     <button onClick={logout} className='btn wid50 btn_01'>
                         登出
                     </button>

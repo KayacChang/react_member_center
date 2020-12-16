@@ -1,4 +1,4 @@
-import styles from './layout.module.css';
+import styles from './birthdayPiker.module.css';
 export default function BirthdayPiker({ value, setFunc, year, month, day, css }) {
     const createYear = () => {
         const today = new Date();

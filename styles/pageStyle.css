@@ -1,0 +1,45 @@
+.formGroup {
+    width: 100%;
+    margin: 1em 0;
+}
+
+.formTitle {
+    width: 100%;
+    font-size: 0.8em;
+}
+
+.formTitle p {
+    color: #0c0e43;
+}
+
+.formTitle label {
+    color: red;
+    margin-left: 5px;
+}
+
+.btnGroup button {
+    width: 100%;
+}
+
+.linkGroup {
+    width: 100%;
+    font-size: 0.8em;
+    margin: 20px 0;
+}
+
+.signin {
+    max-width: 640px;
+}
+
+.signin input {
+    border: solid 0px #d7d7d7;
+}
+
+.signup {
+    max-width: 640px;
+}
+
+.signup input,
+.signup select {
+    border: solid 1px #d7d7d7;
+}
