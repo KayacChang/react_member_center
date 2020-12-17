@@ -63,17 +63,21 @@ export default function SignIn() {
         const res = await login(req, values.acct);
 
         if (res.ReturnCode == 0) {
-            console.log('123-------------------------');
+            console.log('111-------------------------');
+            console.log(res.ReturnData.AcctID.tiString());
             console.log({ user: res.ReturnData.AcctID });
 
             try {
+                e.preventDefault();
                 MyApp.postMessage({ user: res.ReturnData.AcctID });
             } catch (e) {
                 console.log(e);
+                e.preventDefault();
                 var MyApp = window;
                 MyApp.postMessage({ user: res.ReturnData.AcctID });
                 console.log(MyApp);
             }
+            Window.postMessage({ user: res.ReturnData.AcctID });
 
             store.dispatch(loginAction(res.ReturnData.AcctID));
             console.log(store.getState());
