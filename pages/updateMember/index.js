@@ -4,8 +4,9 @@ import BirthdayPiker from '../../components/birthdayPiker';
 import logoutAction from '../../store/actions/logout';
 import store from '../../store';
 import Link from 'next/link';
-import getData from '../../api/getMember';
 import { useSelector } from 'react-redux';
+import { Request } from '../../model/getMember';
+import GetMember from '../../api/getMember';
 
 export default function updateMember() {
     const [user, setUser] = useState({
@@ -17,7 +18,6 @@ export default function updateMember() {
         month: '',
         day: '',
     });
-
     const hasLogin = useSelector((state) => state.user);
     const [orgData, setData] = useState();
     React.useEffect(() => {
@@ -27,11 +27,12 @@ export default function updateMember() {
         }
 
         const fetchUsers = async () => {
-            const data = await getData();
+            const req = Request(hasLogin);
+            console.log(req);
+            const data = await GetMember(req);
             setData(data);
             init(data);
         };
-
         fetchUsers();
     }, []);
 

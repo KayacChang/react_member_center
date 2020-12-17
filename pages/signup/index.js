@@ -3,6 +3,13 @@ import InputField from '../../components/inputField';
 import PasswordVisibale from '../../components/passwordVisibale';
 import BirthdayPiker from '../../components/birthdayPiker';
 import Link from 'next/link';
+import signupApi from '../../api/signup';
+import { Request } from '../../model/signup';
+import loginAction from '../../store/actions/login';
+import store from '../../store';
+import { useRouter } from 'next/router';
+import { wait } from '../../functions/util';
+import Alert from '../../components/modal';
 export default function signup() {
     const [user, setUser] = useState({
         name: '',
@@ -14,6 +21,8 @@ export default function signup() {
         day: '',
         psw: '',
         pswConfirm: '',
+        open: false,
+        alertText: '',
     });
 
     const [err, setErr] = useState({
@@ -25,6 +34,8 @@ export default function signup() {
         pswErr: false,
         pswConfirmErr: false,
     });
+
+    const router = useRouter();
 
     const pswInput = createRef();
     const [showPassword, setShowPassword] = useState(false);
@@ -84,24 +95,29 @@ export default function signup() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const name = user.name;
-        const birthday = user.year + '-' + user.month + '-' + user.day;
-        const id = user.id;
-        const phone = user.phone;
-        const email = user.email;
-        const psw = pswInput.current.value;
-        if (isSubmit) {
-            console.log(
-                JSON.stringify({
-                    Data: { name, birthday, id, phone, email, psw },
-                    source_id: 4,
-                })
-            );
+        if (!isSubmit) return;
+
+        const req = Request(user);
+        console.log(req);
+        const res = await signupApi(req);
+
+        if (res.ReturnCode == 0) {
+            store.dispatch(loginAction(res.ResultData.AcctID));
+            console.log(store.getState());
+            setUser({ ...user, open: true, alertText: '註冊成功，將自動導回首頁...' });
+            passed();
+        } else {
+            setUser({ ...user, open: true, alertText: res.ReturnMessage });
         }
     };
+    async function passed() {
+        await wait(3000);
+        router.push('/');
+    }
 
     return (
         <div className='wid100 fx fx_center'>
+            <Alert setFunc={setUser} modalData={user} />
             <form className='signup wid80' onSubmit={handleSubmit}>
                 <label className='wid100 fx fx_center mainTitle'>會員註冊</label>
 

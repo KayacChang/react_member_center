@@ -4,7 +4,6 @@ const emailPattern = new RegExp(
 const phonePattern = new RegExp(/^09\d{2}-?\d{3}-?\d{3}$/);
 
 export function nameValidate(newValue) {
-
     if (newValue && newValue.length < 2) {
         return true;
     } else {
@@ -54,8 +53,6 @@ export function idValidate(newValue) {
 
 export function loginAcctValidate(newValue) {
     if (!newValue) return;
-
-
 
     if (
         (!isNaN(Number(newValue)) && !phonePattern.test(newValue) && newValue.length > 9) ||

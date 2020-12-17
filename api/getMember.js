@@ -8,7 +8,7 @@ function log(myJson) {
     }
 }
 
-function real() {
+function real(request) {
     return fetch('https://10.2.108.136:3366/carplus/member/getMember', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -34,4 +34,5 @@ async function mock() {
 
 export default function getMemberData(request) {
     return mock();
+    //return real(request);
 }

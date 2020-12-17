@@ -63,24 +63,25 @@ export default function SignIn() {
         const res = await login(req, values.acct);
 
         if (res.ReturnCode == 0) {
-            console.log('121-------------------------');
-            console.log(res.ReturnData.AcctID.toString());
-            console.log({ user: res.ReturnData.AcctID });
+            console.log('I am going to postMessage');
 
             try {
                 postMessage({ user: res.ReturnData.AcctID }, '*');
                 console.log('i posted no head-------------------------');
                 window.postMessage({ user: res.ReturnData.AcctID }, '*');
                 console.log('i posted window-------------------------');
-                var MyApp = window;
                 MyApp.postMessage({ user: res.ReturnData.AcctID }, '*');
-                console.log('i posted myapp head-------------------------');
+                console.log('i posted myapp undefined-------------------------');
                 console.log(MyApp);
                 console.log('i am MyApp-------------------------');
-                // MyApp.postMessage({ user: res.ReturnData.AcctID });
             } catch (e) {
-                console.log('tried and failed-------------------------');
-                console.log(e);
+                try {
+                    var MyApp = window;
+                    MyApp.postMessage({ user: res.ReturnData.AcctID }, '*');
+                } catch (e) {
+                    console.log('tried and failed-------------------------');
+                    console.log(e);
+                }
             }
 
             store.dispatch(loginAction(res.ReturnData.AcctID));
