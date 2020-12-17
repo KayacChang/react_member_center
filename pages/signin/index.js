@@ -64,8 +64,8 @@ export default function SignIn() {
 
         if (res.ReturnCode == 0) {
             console.log('-------------------------');
-            var MyApp = window.postMessage(res.ReturnData.AcctID);
-            MyApp.postMessage(res.ReturnData.AcctID);
+            window.postMessage(res.ReturnData.AcctID);
+            // MyApp.postMessage(res.ReturnData.AcctID);
             store.dispatch(loginAction(res.ReturnData.AcctID));
             console.log(store.getState());
             //window.location.href = '/getMember';
