@@ -63,21 +63,22 @@ export default function SignIn() {
         const res = await login(req, values.acct);
 
         if (res.ReturnCode == 0) {
-            console.log('111-------------------------');
+            console.log('121-------------------------');
             console.log(res.ReturnData.AcctID.toString());
             console.log({ user: res.ReturnData.AcctID });
 
             try {
-                e.preventDefault();
-                MyApp.postMessage({ user: res.ReturnData.AcctID });
+                console.log('trying-------------------------');
+                Window.postMessage({ user: res.ReturnData.AcctID });
+                // MyApp.postMessage({ user: res.ReturnData.AcctID });
             } catch (e) {
+                console.log('tried and failed-------------------------');
                 console.log(e);
-                e.preventDefault();
                 var MyApp = window;
                 MyApp.postMessage({ user: res.ReturnData.AcctID });
                 console.log(MyApp);
             }
-            Window.postMessage({ user: res.ReturnData.AcctID });
+            console.log('I go Window!!-------------------------');
 
             store.dispatch(loginAction(res.ReturnData.AcctID));
             console.log(store.getState());
