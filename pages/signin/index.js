@@ -63,14 +63,22 @@ export default function SignIn() {
         const res = await login(req, values.acct);
 
         if (res.ReturnCode == 0) {
-            console.log('-------------------------');
-            var MyApp = window;
-            MyApp.postMessage({ retCode: res.ReturnData.AcctID });
-            // MyApp.postMessage(res.ReturnData.AcctID);
+            console.log('123-------------------------');
+            console.log({ user: res.ReturnData.AcctID });
+
+            try {
+                MyApp.postMessage({ user: res.ReturnData.AcctID });
+            } catch (e) {
+                console.log(e);
+                var MyApp = window;
+                MyApp.postMessage({ user: res.ReturnData.AcctID });
+                console.log(MyApp);
+            }
+
             store.dispatch(loginAction(res.ReturnData.AcctID));
             console.log(store.getState());
             //window.location.href = '/getMember';
-            router.push('/updateMember');
+            //router.push('/updateMember');
         } else {
             setAccts({ ...values, open: true, alertText: res.ReturnMessage });
         }
