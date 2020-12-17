@@ -68,17 +68,15 @@ export default function SignIn() {
             console.log({ user: res.ReturnData.AcctID });
 
             try {
-                console.log('trying-------------------------');
-                Window.postMessage({ user: res.ReturnData.AcctID });
+                postMessage({ user: res.ReturnData.AcctID }, '*');
                 // MyApp.postMessage({ user: res.ReturnData.AcctID });
             } catch (e) {
                 console.log('tried and failed-------------------------');
                 console.log(e);
                 var MyApp = window;
-                MyApp.postMessage({ user: res.ReturnData.AcctID });
+                MyApp.postMessage({ user: res.ReturnData.AcctID }, '*');
                 console.log(MyApp);
             }
-            console.log('I go Window!!-------------------------');
 
             store.dispatch(loginAction(res.ReturnData.AcctID));
             console.log(store.getState());
