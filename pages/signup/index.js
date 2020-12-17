@@ -102,10 +102,8 @@ export default function signup() {
 
     return (
         <div className='wid100 fx fx_center'>
-            <form className='signup wid50' onSubmit={handleSubmit}>
-                <label className='wid100 fx fx_center mainTitle'>
-                    會員註冊
-                </label>
+            <form className='signup wid80' onSubmit={handleSubmit}>
+                <label className='wid100 fx fx_center mainTitle'>會員註冊</label>
 
                 <div className='formGroup'>
                     <div className='formTitle'>
@@ -121,7 +119,6 @@ export default function signup() {
                         placeholder='請輸入姓名'
                         type='name'
                         filled={filled}
-
                     />
 
                     {err.nameErr && <span className='input_err'>請輸入姓名</span>}
@@ -141,7 +138,6 @@ export default function signup() {
                         placeholder='請輸入您的身分證字號'
                         type='id'
                         filled={filled}
-
                     />
 
                     {err.idErr && <span className='input_err'>請輸入正確的身分證字號。</span>}
@@ -179,7 +175,6 @@ export default function signup() {
                         placeholder='請輸入您的行動電話'
                         type='phone'
                         filled={filled}
-
                     />
 
                     {err.phoneErr && <span className='input_err'>請輸入正確的行動電話。</span>}
@@ -216,7 +211,7 @@ export default function signup() {
                         handlePswChange={handlePswChange}
                         pswInput={pswInput}
                         setShowPassword={setShowPassword}
-                        placeholder={'請輸入6~16位英數字元標點符號混合'}
+                        placeholder={'請輸入6~16位英數字元混合'}
                     />
 
                     {err.pswErr && (

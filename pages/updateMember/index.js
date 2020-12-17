@@ -33,7 +33,6 @@ export default function updateMember() {
         };
 
         fetchUsers();
-
     }, []);
 
     function init(data) {
@@ -65,7 +64,6 @@ export default function updateMember() {
         store.dispatch(logoutAction());
         window.location.href = '/';
     };
-
 
     const dataCheck = () => {
         if (
@@ -111,14 +109,14 @@ export default function updateMember() {
     }
 
     const [isSubmit, setIsSubmit] = useState(false);
-    const filled = () => { setIsSubmit(true); }
+    const filled = () => {
+        setIsSubmit(true);
+    };
 
     return (
         <div className=' wid100 fx fx_center'>
-            <form className='signup wid50' onSubmit={handleSubmit}>
-                <label className='wid100 fx fx_center mainTitle'>
-                    修改會員資料
-                </label>
+            <form className='signup wid80' onSubmit={handleSubmit}>
+                <label className='wid100 fx fx_center mainTitle'>修改會員資料</label>
 
                 <div className='formGroup'>
                     <div className='formTitle'>
@@ -211,7 +209,6 @@ export default function updateMember() {
                 </div>
 
                 <div className='btnGroup fx fx_nowrap'>
-
                     <button type='submit' className={isSubmit ? 'btn btn50 btn_00' : 'btn btn50 btn_disable'}>
                         確定修改
                     </button>
@@ -224,13 +221,9 @@ export default function updateMember() {
 
                     <div style={{ width: '5%' }}></div>
                     <Link href='/'>
-                        <button className='btn wid50 btn_01'>
-                            回首頁
-                        </button>
+                        <button className='btn wid50 btn_01'>回首頁</button>
                     </Link>
-
                 </div>
-
             </form>
         </div>
     );

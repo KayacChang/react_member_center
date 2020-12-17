@@ -1,4 +1,4 @@
-import React, { createRef, useState } from 'react';
+import React, { useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
@@ -11,11 +11,9 @@ import { Request } from '../../model/login';
 import loginAction from '../../store/actions/login';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-import Alert from '../../components/modal'
+import Alert from '../../components/modal';
 import store from '../../store';
 import { loginAcctValidate } from '../../functions/validation';
-
-
 
 function InputField({ setAcct, value, placeholder }) {
     function handle(e) {
@@ -57,15 +55,16 @@ export default function SignIn() {
         setAccts({ ...values, showPassword: !values.showPassword });
     };
 
-
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (values.acctErr) return;
         const req = Request(values.acct, values.password);
+        console.log(req);
         const res = await login(req, values.acct);
 
         if (res.ReturnCode == 0) {
+            var MyApp = window.open();
+            MyApp.postMessage(res.ReturnData.AcctID);
             store.dispatch(loginAction(res.ReturnData.AcctID));
             console.log(store.getState());
             //window.location.href = '/getMember';
@@ -78,17 +77,12 @@ export default function SignIn() {
     return (
         <div className='wid100 fx fx_center'>
             <Alert setFunc={setAccts} modalData={values} />
-            <form className='signin wid50' onSubmit={handleSubmit}>
+            <form className='signin wid80' onSubmit={handleSubmit}>
                 <label className='wid100 fx fx_center mainTitle'>
                     {hasLogin ? JSON.stringify(hasLogin) : '會員登入'}
                 </label>
                 <div className='input_box'>
-                    <InputField
-                        setAcct={setAccts}
-                        value={values}
-                        placeholder='請輸入您的Email或手機號碼'
-                        type='acct'
-                    />
+                    <InputField setAcct={setAccts} value={values} placeholder='請輸入您的Email或手機號碼' type='acct' />
                 </div>
 
                 {values.acctErr && <span className='input_err'>Email或手機號碼格式錯誤，請重新輸入</span>}
@@ -113,12 +107,10 @@ export default function SignIn() {
                 </div>
 
                 <div className='linkGroup fx fx_nowrap fx_end'>
-
                     沒有帳號？
                     <Link href='/signup'>
                         <a className='linkText'>加入會員</a>
                     </Link>
-
                 </div>
 
                 <div>
@@ -126,13 +118,10 @@ export default function SignIn() {
                         確認送出
                     </button>
                     <Link href='/'>
-                        <button className='btn wid100 btn_01'>
-                            上一頁
-                        </button>
+                        <button className='btn wid100 btn_01'>上一頁</button>
                     </Link>
                 </div>
-
             </form>
-        </div >
+        </div>
     );
 }
