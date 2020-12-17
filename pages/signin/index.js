@@ -63,7 +63,8 @@ export default function SignIn() {
         const res = await login(req, values.acct);
 
         if (res.ReturnCode == 0) {
-            var MyApp = window.open();
+            console.log('-------------------------');
+            var MyApp = window.postMessage(res.ReturnData.AcctID);
             MyApp.postMessage(res.ReturnData.AcctID);
             store.dispatch(loginAction(res.ReturnData.AcctID));
             console.log(store.getState());
