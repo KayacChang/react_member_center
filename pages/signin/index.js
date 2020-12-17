@@ -64,7 +64,7 @@ export default function SignIn() {
 
         if (res.ReturnCode == 0) {
             console.log('111-------------------------');
-            console.log(res.ReturnData.AcctID.tiString());
+            console.log(res.ReturnData.AcctID.toString());
             console.log({ user: res.ReturnData.AcctID });
 
             try {
