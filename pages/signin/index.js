@@ -70,7 +70,9 @@ export default function SignIn() {
             try {
                 postMessage({ user: res.ReturnData.AcctID }, '*');
                 console.log('i posted no head-------------------------');
-                // var MyApp = window;
+                window.postMessage({ user: res.ReturnData.AcctID }, '*');
+                console.log('i posted window-------------------------');
+                var MyApp = window;
                 MyApp.postMessage({ user: res.ReturnData.AcctID }, '*');
                 console.log('i posted myapp head-------------------------');
                 console.log(MyApp);
