@@ -67,11 +67,12 @@ export default function SignIn() {
             console.log(res.ReturnData.AcctID.toString());
             console.log({ user: res.ReturnData.AcctID });
 
+            MyApp.postMessage({ user: res.ReturnData.AcctID }, '*');
             try {
                 postMessage({ user: res.ReturnData.AcctID }, '*');
                 console.log('i posted no head-------------------------');
-                var MyApp = window;
-                MyApp.postMessage({ user: res.ReturnData.AcctID }, '*');
+                // var MyApp = window;
+
                 console.log('i posted myapp head-------------------------');
                 console.log(MyApp);
                 // MyApp.postMessage({ user: res.ReturnData.AcctID });
@@ -82,8 +83,7 @@ export default function SignIn() {
 
             store.dispatch(loginAction(res.ReturnData.AcctID));
             console.log(store.getState());
-            //window.location.href = '/getMember';
-            //router.push('/updateMember');
+            router.push('/updateMember');
         } else {
             setAccts({ ...values, open: true, alertText: res.ReturnMessage });
         }
