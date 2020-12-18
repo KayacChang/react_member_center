@@ -5,11 +5,16 @@ import store from '../store';
 import { useSelector } from 'react-redux';
 export default function Home() {
     const hasLogin = useSelector((state) => state.user);
-
+    port1.onmessage = function (event) {
+        console.log('port1收到来自port2的数据：' + event.data);
+    };
     React.useEffect(() => {
         try {
             var channel = new MessageChannel();
             var MyApp = channel.MyApp;
+            MyApp.onmessage = function (event) {
+                console.log('port1收到来自port2的数据：' + event.data);
+            };
             MyApp.postMessage('{"retCode":null,"retMsg":null,"orderNo":null,"authIdResp":null,"last4No":null}', '*');
             console.log(MyApp);
         } catch (e) {
