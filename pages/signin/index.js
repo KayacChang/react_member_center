@@ -64,8 +64,9 @@ export default function SignIn() {
 
         if (res.ReturnCode == 0) {
             console.log('I am going to postMessage');
-            postMsg();
+
             try {
+                postMsg();
             } catch (e) {
                 console.log('tried and failed-------------------------');
                 console.log(e);
