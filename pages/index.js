@@ -8,6 +8,8 @@ export default function Home() {
 
     React.useEffect(() => {
         try {
+            var channel = new MessageChannel();
+            var MyApp = channel.MyApp;
             MyApp.postMessage('{"retCode":null,"retMsg":null,"orderNo":null,"authIdResp":null,"last4No":null}', '*');
             console.log(MyApp);
         } catch (e) {
