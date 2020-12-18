@@ -66,21 +66,7 @@ export default function SignIn() {
             console.log('I am going to postMessage');
 
             try {
-                const MyApp = new BroadcastChannel('my_bus');
-                console.log(MyApp);
-                MyApp.postMessage('This is a test message.');
-                MyApp.onmessage = function (e) {
-                    console.log('Received', e.data);
-                };
-                MyApp.close();
-                // postMessage({ user: res.ReturnData.AcctID }, '*');
-                // console.log('i posted no head-------------------------');
-                // window.postMessage({ user: res.ReturnData.AcctID }, '*');
-                // console.log('i posted window-------------------------');
-                // MyApp.postMessage({ user: res.ReturnData.AcctID }, '*');
-                // console.log('i posted myapp undefined-------------------------');
-                // console.log(MyApp);
-                // console.log('i am MyApp-------------------------');
+                postMsg();
             } catch (e) {
                 console.log('tried and failed-------------------------');
                 console.log(e);
@@ -93,6 +79,11 @@ export default function SignIn() {
             setAccts({ ...values, open: true, alertText: res.ReturnMessage });
         }
     };
+
+    function postMsg() {
+        MyApp.postMessage({ user: res.ReturnData.AcctID }, '*');
+        console.log(MyApp);
+    }
 
     return (
         <div className='wid100 fx fx_center'>
