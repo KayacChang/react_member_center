@@ -1,45 +1,43 @@
-import InputBase from '@material-ui/core/InputBase';
-import IconButton from '@material-ui/core/IconButton';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import InputBase from "@material-ui/core/InputBase";
+import IconButton from "@material-ui/core/IconButton";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
 export default function PasswordVisibale({
-    showPassword,
-    psw,
-    handlePswChange,
-    pswInput,
-    setShowPassword,
-    placeholder,
+  showPassword,
+  psw,
+  handlePswChange,
+  setShowPassword,
+  placeholder,
 }) {
-    const handleClickShowPassword = () => {
-        setShowPassword(!showPassword);
-    };
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
-    const handleMouseDownPassword = (event) => {
-        event.preventDefault();
-    };
-    return (
-        <InputBase
-            fullWidth
-            error
-            required
-            type={showPassword ? 'text' : 'password'}
-            value={psw}
-            onChange={handlePswChange}
-            inputRef={pswInput}
-            inputProps={{ 'aria-label': 'naked' }}
-            placeholder={placeholder}
-            endAdornment={
-                <InputAdornment position='end'>
-                    <IconButton
-                        aria-label='toggle password visibility'
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                    >
-                        {showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                </InputAdornment>
-            }
-        />
-    );
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+  return (
+    <InputBase
+      fullWidth
+      error
+      required
+      type={showPassword ? "text" : "password"}
+      value={psw}
+      onChange={handlePswChange}
+      inputProps={{ "aria-label": "naked" }}
+      placeholder={placeholder}
+      endAdornment={
+        <InputAdornment position="end">
+          <IconButton
+            aria-label="toggle password visibility"
+            onClick={handleClickShowPassword}
+            onMouseDown={handleMouseDownPassword}
+          >
+            {showPassword ? <Visibility /> : <VisibilityOff />}
+          </IconButton>
+        </InputAdornment>
+      }
+    />
+  );
 }

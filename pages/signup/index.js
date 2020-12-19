@@ -1,268 +1,139 @@
-import React, { createRef, useState } from 'react';
-import InputField from '../../components/inputField';
-import PasswordVisibale from '../../components/passwordVisibale';
-import BirthdayPiker from '../../components/birthdayPiker';
-import Link from 'next/link';
-import signupApi from '../../api/signup';
-import { Request } from '../../model/signup';
-import loginAction from '../../store/actions/login';
-import store from '../../store';
-import { useRouter } from 'next/router';
-import { wait } from '../../functions/util';
-import Alert from '../../components/modal';
+import React, { useState } from "react";
+import Input from "../../components/_InputField";
+import Link from "next/link";
+
+import {
+  nameValidate,
+  passwordValidate,
+  phoneValidate,
+  emailValidate,
+  idValidate,
+} from "../../functions/validation";
+
 export default function signup() {
-    const [user, setUser] = useState({
-        name: '',
-        id: '',
-        phone: '',
-        email: '',
-        year: '',
-        month: '',
-        day: '',
-        psw: '',
-        pswConfirm: '',
-        open: false,
-        alertText: '',
-    });
+  const [payload, setPayload] = useState({
+    name: "",
+    id: "",
+    birth: "",
+    phone: "",
+    email: "",
+    password: "",
+  });
 
-    const [err, setErr] = useState({
-        nameErr: '',
-        idErr: '',
-        phoneErr: '',
-        emailErr: '',
-        yearErr: '',
-        pswErr: false,
-        pswConfirmErr: false,
-    });
+  const [hasValidated, setValidated] = useState(false);
 
-    const router = useRouter();
+  function onSubmit(event) {
+    event.preventDefault();
 
-    const pswInput = createRef();
-    const [showPassword, setShowPassword] = useState(false);
-    const handlePswChange = (e) => {
-        const newValue = e.target.value;
-        setUser({ ...user, psw: newValue });
-        if (newValue.length < 6 || newValue.length > 16) {
-            setErr({ ...err, pswErr: true });
-        } else {
-            const confirm = user.pswConfirm;
-            if (newValue == confirm && confirm !== '') {
-                setErr({ ...err, pswErr: false, pswConfirmErr: false });
-            } else {
-                setErr({ ...err, pswErr: false, pswConfirmErr: true });
-            }
-        }
-        filled();
-    };
-
-    const pswConfirmInput = createRef();
-    const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
-    const handlePswConfirmChange = (e) => {
-        const newValue = e.target.value;
-        const oldPsw = user.psw;
-        setUser({ ...user, pswConfirm: newValue });
-        if (newValue !== oldPsw) {
-            setErr({ ...err, pswConfirmErr: true });
-        } else {
-            setErr({ ...err, pswConfirmErr: false });
-        }
-        filled();
-    };
-
-    const [isSubmit, setIsSubmit] = useState(false);
-
-    const filled = () => {
-        const psw = pswInput.current.value;
-        const pswC = pswConfirmInput.current.value;
-        if (
-            !err.nameErr &&
-            !err.idErr &&
-            !err.phoneErr &&
-            !err.emailErr &&
-            !err.pswErr &&
-            user.name !== '' &&
-            user.id !== '' &&
-            user.phone !== '' &&
-            user.email !== '' &&
-            psw !== '' &&
-            psw === pswC
-        ) {
-            setIsSubmit(true);
-        } else {
-            setIsSubmit(false);
-        }
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (!isSubmit) return;
-
-        const req = Request(user);
-        console.log(req);
-        const res = await signupApi(req);
-
-        if (res.ReturnCode == 0) {
-            store.dispatch(loginAction(res.ResultData.AcctID));
-            console.log(store.getState());
-            setUser({ ...user, open: true, alertText: '註冊成功，將自動導回首頁...' });
-            passed();
-        } else {
-            setUser({ ...user, open: true, alertText: res.ReturnMessage });
-        }
-    };
-    async function passed() {
-        await wait(3000);
-        router.push('/');
+    if (!hasValidated) {
+      return;
     }
 
-    return (
-        <div className='wid100 fx fx_center'>
-            <Alert setFunc={setUser} modalData={user} />
-            <form className='signup wid80' onSubmit={handleSubmit}>
-                <label className='wid100 fx fx_center mainTitle'>會員註冊</label>
+    console.log(payload);
 
-                <div className='formGroup'>
-                    <div className='formTitle'>
-                        <p>
-                            姓名<label>*</label>
-                        </p>
-                    </div>
-                    <InputField
-                        setFuncErr={setErr}
-                        setFunc={setUser}
-                        value={user}
-                        err={err}
-                        placeholder='請輸入姓名'
-                        type='name'
-                        filled={filled}
-                    />
+    // const form = event.target;
+    // const input = form.querySelector("#id");
+    // console.log(input);
+  }
 
-                    {err.nameErr && <span className='input_err'>請輸入姓名</span>}
-                </div>
+  return (
+    <div className="wid100 fx fx_center">
+      {/* <Alert setFunc={setUser} modalData={user} /> */}
 
-                <div className='formGroup'>
-                    <div className='formTitle'>
-                        <p>
-                            身分證字號<label>*</label>
-                        </p>
-                    </div>
-                    <InputField
-                        setFuncErr={setErr}
-                        setFunc={setUser}
-                        value={user}
-                        err={err}
-                        placeholder='請輸入您的身分證字號'
-                        type='id'
-                        filled={filled}
-                    />
+      <form className="signup wid80" onSubmit={onSubmit}>
+        <label className="wid100 fx fx_center mainTitle">會員註冊</label>
 
-                    {err.idErr && <span className='input_err'>請輸入正確的身分證字號。</span>}
-                </div>
+        {[
+          {
+            id: "name",
+            label: "姓名",
+            placeholder: "請輸入姓名",
+            validate: nameValidate,
+            error: "請輸入姓名",
+            onChange: (name) => setPayload((origin) => ({ ...origin, name })),
+            onError: (err) => setValidated(!err),
+          },
+          {
+            id: "id",
+            label: "身分證字號",
+            placeholder: "請輸入您的身分證字號",
+            validate: idValidate,
+            error: "請輸入正確的身分證字號",
+            onChange: (id) => setPayload((origin) => ({ ...origin, id })),
+            onError: (err) => setValidated(!err),
+          },
+        ].map((props) => (
+          <Input {...props} />
+        ))}
 
-                <div className='formGroup'>
-                    <div className='formTitle'>
-                        <p>
-                            出生年月日<label>*</label>
-                        </p>
-                    </div>
-                    <div>
-                        <BirthdayPiker
-                            value={user}
-                            setFunc={setUser}
-                            year={user.year}
-                            month={user.month}
-                            day={user.day}
-                            css={'fx fx_nowrap fx_center fx_between'}
-                        ></BirthdayPiker>
-                    </div>
-                </div>
+        <Input
+          id="birthday"
+          label="出生年月日"
+          type="datepicker"
+          onChange={(birth) => setPayload((origin) => ({ ...origin, birth }))}
+          onError={(err) => setValidated(!err)}
+        />
 
-                <div className='formGroup'>
-                    <div className='formTitle'>
-                        <p>
-                            行動電話<label>*</label>
-                        </p>
-                    </div>
-                    <InputField
-                        setFuncErr={setErr}
-                        setFunc={setUser}
-                        value={user}
-                        err={err}
-                        placeholder='請輸入您的行動電話'
-                        type='phone'
-                        filled={filled}
-                    />
+        <Input
+          id="phone"
+          label="行動電話"
+          placeholder="請輸入您的行動電話"
+          validate={phoneValidate}
+          error="請輸入正確的行動電話。"
+          onChange={(phone) => setPayload((origin) => ({ ...origin, phone }))}
+          onError={(err) => setValidated(!err)}
+        />
 
-                    {err.phoneErr && <span className='input_err'>請輸入正確的行動電話。</span>}
-                </div>
+        <Input
+          id="email"
+          label="Email"
+          placeholder="請輸入您的Email"
+          validate={emailValidate}
+          error="請輸入正確的Email，建議避免使用hotmail"
+          onChange={(email) => setPayload((origin) => ({ ...origin, email }))}
+          onError={(err) => setValidated(!err)}
+        />
 
-                <div className='formGroup'>
-                    <div className='formTitle'>
-                        <p>
-                            Email<label>*</label>
-                        </p>
-                    </div>
-                    <InputField
-                        setFuncErr={setErr}
-                        setFunc={setUser}
-                        value={user}
-                        err={err}
-                        placeholder='請輸入您的Email'
-                        type='email'
-                        filled={filled}
-                    />
+        <Input
+          id="password"
+          label="密碼"
+          placeholder="請輸入6~16位英數字元混合"
+          validate={passwordValidate}
+          type="password"
+          error="密碼格式不正確，請輸入6~16位英數字元標點符號混合"
+          onChange={(password) =>
+            setPayload((origin) => ({ ...origin, password }))
+          }
+          onError={(err) => setValidated(!err)}
+        />
 
-                    {err.emailErr && <span className='input_err'>請輸入正確的Email，建議避免使用hotmail。</span>}
-                </div>
+        <Input
+          id="password_confirm"
+          label="確認密碼"
+          placeholder="請再次輸入您的密碼"
+          validate={passwordValidate}
+          type="password"
+          error="兩次密碼輸入不相同"
+          onError={(err) => setValidated(!err)}
+        />
 
-                <div className='formGroup'>
-                    <div className='formTitle'>
-                        <p>
-                            密碼<label>*</label>
-                        </p>
-                    </div>
-                    <PasswordVisibale
-                        showPassword={showPassword}
-                        psw={user.psw}
-                        handlePswChange={handlePswChange}
-                        pswInput={pswInput}
-                        setShowPassword={setShowPassword}
-                        placeholder={'請輸入6~16位英數字元混合'}
-                    />
+        <div className="btnGroup fx fx_nowrap">
+          <Link href="/signin">
+            <button className="btn btn50 btn_01">回上一頁</button>
+          </Link>
+          <div style={{ width: "5%" }}></div>
+          <button
+            type="submit"
+            className={
+              "btn btn50 btn_00"
 
-                    {err.pswErr && (
-                        <span className='input_err'>密碼格式不正確，請輸入6~16位英數字元標點符號混合。</span>
-                    )}
-                </div>
-
-                <div className='formGroup'>
-                    <div className='formTitle'>
-                        <p>
-                            確認密碼<label>*</label>
-                        </p>
-                    </div>
-                    <PasswordVisibale
-                        showPassword={showPasswordConfirm}
-                        psw={user.pswConfirm}
-                        handlePswChange={handlePswConfirmChange}
-                        pswInput={pswConfirmInput}
-                        setShowPassword={setShowPasswordConfirm}
-                        placeholder={'請再次輸入您的密碼'}
-                    />
-
-                    {err.pswConfirmErr && <span className='input_err'>兩次密碼輸入不相同。</span>}
-                </div>
-
-                <div className='btnGroup fx fx_nowrap'>
-                    <Link href='/signin'>
-                        <button className='btn btn50 btn_01'>回上一頁</button>
-                    </Link>
-                    <div style={{ width: '5%' }}></div>
-                    <button type='submit' className={isSubmit ? 'btn btn50 btn_00' : 'btn btn50 btn_disable'}>
-                        確認送出
-                    </button>
-                </div>
-            </form>
+              // isSubmit ? "btn btn50 btn_00" : "btn btn50 btn_disable"
+            }
+          >
+            確認送出
+          </button>
         </div>
-    );
+      </form>
+    </div>
+  );
 }
